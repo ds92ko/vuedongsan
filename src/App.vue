@@ -3,14 +3,17 @@
   <div v-if="isModalOpen === true" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h4>상세페이지임</h4>
+        <h4>{{ products[modalId].title }}</h4>
         <button @click="closeModal" class="modal-close-btn">
           <i class="line"></i>
           <i class="line"></i>
         </button>
       </div>
       <div class="modal-body">
-        <p>상세페이지 내용임</p>
+        <img class="room-img" :src="products[modalId].image" alt="room">
+        <p>{{ products[modalId].price.toLocaleString('ko-KR') }}원</p>
+        <p>{{ products[modalId].content }}</p>
+
       </div>
     </div>
   </div>
@@ -21,10 +24,10 @@
   </nav>
 
   <!-- 상품 리스트 -->
-  <div v-for="product in products" :key="product.id">
+  <div v-for="product in products" :key="product.id" @click="() => openModal(product.id)">
     <img class="room-img" :src="product.image" alt="room">
-    <h4 @click="openModal">{{ product.title }}</h4>
-    <p>{{ product.price }}만원</p>
+    <h4>{{ product.title }}</h4>
+    <p>{{ product.price.toLocaleString('ko-KR') }}원</p>
   </div>
 </template>
 
@@ -35,14 +38,16 @@
     name: 'App',
     data() {
       return {
+        modalId: 0,
         isModalOpen: false,
         navList: ['Home', 'Shop', 'About'],
         products: data,
       }
     },
     methods: {
-      openModal() {
+      openModal(id) {
         this.isModalOpen = true;
+        this.modalId = id;
       },
       closeModal() {
         this.isModalOpen = false;
