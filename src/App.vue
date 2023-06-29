@@ -1,38 +1,34 @@
 <template>
-  <!-- 모달 -->
-  <div v-if="isModalOpen === true" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4>{{ products[modalId].title }}</h4>
-        <button @click="closeModal" class="modal-close-btn">
-          <i class="line"></i>
-          <i class="line"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <img class="room-img" :src="products[modalId].image" alt="room">
-        <p>{{ products[modalId].price.toLocaleString('ko-KR') }}원</p>
-        <p>{{ products[modalId].content }}</p>
+  <header>
+    <!-- 네비 -->
+    <nav class="menu">
+      <a v-for="(navItem, idx) in navList" :key="idx" :href="navItem.path">
+        {{ navItem.name }}
+      </a>
+    </nav>
+  </header>
 
+  <main>
+    <div class="container">
+      <!-- 할인 -->
+      <Discount v-if="isDiscount" />
+  
+      <!-- 상품 리스트 -->
+      <div class="content">
+        <Card v-for="product in products" :key="product.id" :product="product" :openModal="openModal" />
       </div>
     </div>
-  </div>
+  </main>
 
-  <!-- 네비 -->
-  <nav class="menu">
-    <a v-for="(navItem, idx) in navList" :key="idx">{{ navItem }}</a>
-  </nav>
-
-  <!-- 상품 리스트 -->
-  <div v-for="product in products" :key="product.id" @click="() => openModal(product.id)">
-    <img class="room-img" :src="product.image" alt="room">
-    <h4>{{ product.title }}</h4>
-    <p>{{ product.price.toLocaleString('ko-KR') }}원</p>
-  </div>
+  <!-- 모달 -->
+  <Modal v-if="isModalOpen" :product="products[modalId]" :isDiscount="isDiscount" :closeModal="closeModal" />
 </template>
 
 <script>
   import data from './data/products';
+  import Modal from './components/Modal.vue';
+  import Discount from './components/Discount.vue';
+  import Card from './components/Card.vue';
 
   export default {
     name: 'App',
@@ -40,7 +36,21 @@
       return {
         modalId: 0,
         isModalOpen: false,
-        navList: ['Home', 'Shop', 'About'],
+        isDiscount: true,
+        navList: [
+          {
+            name: 'Home',
+            path: '/'
+          },
+          {
+            name: 'Shop',
+            path: '/shop'
+          },
+          {
+            name: 'About',
+            path: '/about'
+          }
+        ],
         products: data,
       }
     },
@@ -54,6 +64,9 @@
       }
     },
     components: {
+      Discount,
+      Modal,
+      Card
     }
   }
 </script>
@@ -75,70 +88,40 @@
     box-sizing: border-box;
   }
 
-  .modal {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    position: fixed;
-    padding: 20px;
-  }
-
-  .modal-content {
-    width: 100%;
-    background: white;
-    border-radius: 8px;
-    padding: 20px;  
-  }
-
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .modal-header h4 {
-    margin: 0;
-    flex-grow: 1;
-  }
-
-  .modal-close-btn {
-    position: relative;
-    background: none;
-    border: 0;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-  }
-
-  .modal-close-btn .line {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: black;
-  }
-
-  .modal-close-btn .line:last-of-type {
-    transform: translate(-50%, -50%) rotate(-45deg);
+  main {
+    padding: 0 20px;
+    margin: 30px auto;
   }
 
   .menu {
     background: darkslateblue;
     padding: 15px;
-    border-radius: 5px;
+    margin-bottom: 30px;
   }
 
   .menu a {
     color: white;
     padding: 10px;
+    text-decoration: none;
+    transition: all .3s;
+  }
+
+  .menu a:hover {
+    opacity: .7;
+  }
+
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
   .room-img {
     width: 100%;
-    margin-top: 40px;
   }
 </style>
