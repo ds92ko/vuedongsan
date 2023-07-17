@@ -12,6 +12,12 @@
     <div class="container">
       <!-- 할인 -->
       <Discount v-if="isDiscount" />
+
+      <!-- 정렬 -->
+      <button @click="sortProducts('name')">이름순</button>
+      <button @click="sortProducts('asc')">낮은 가격순</button>
+      <button @click="sortProducts('desc')">높은 가격순</button>
+      <button @click="sortProducts('init')">되돌리기</button>
   
       <!-- 상품 리스트 -->
       <div class="content">
@@ -55,6 +61,7 @@
           }
         ],
         products: data,
+        initProducts: [...data],
       }
     },
     methods: {
@@ -64,6 +71,37 @@
       },
       closeModal() {
         this.isModalOpen = false;
+      },
+      sortProducts(type) {
+        const sortMethods = {
+          init: () => {
+            this.products = [...this.initProducts];
+          },
+          name: () => {
+            this.products.sort((a, b) => {
+              const nameA = a.title.toUpperCase();
+              const nameB = b.title.toUpperCase();
+
+              if (nameA < nameB) {
+                return -1;
+              } 
+              else if (nameA > nameB) {
+                return 1;
+              } 
+              else {
+                return 0;
+              }
+            });
+          },
+          asc: () => {
+            this.products.sort((a, b) => a.price - b.price);
+          },
+          desc: () => {
+            this.products.sort((a, b) => b.price - a.price);
+          }
+        };
+
+        sortMethods[type]()
       }
     },
     components: {
@@ -117,7 +155,7 @@
   .fade-enter-to {
     opacity: 1;
   }
-  
+
   /* end transition */
   .fade-leave-from {
     opacity: 1;
