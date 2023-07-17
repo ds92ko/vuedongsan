@@ -12,7 +12,11 @@
         <div>
           <Discount v-if="isDiscount" />
           <img class="room-img" :src="product.image" alt="room">
-          <p>{{ product.price.toLocaleString('ko-KR') }}원</p>
+          <div>
+            <!-- <input :value="month" @input="month = $event.target.value" type="number" min="1" max="12" placeholder="개월 수 입력"> -->
+            <input v-model.number="month" type="number" min="1" max="12" placeholder="개월 수 입력">
+          </div>
+          <p>{{ month }}개월 합계 : {{ (product.price * month).toLocaleString('ko-KR') }}원</p>
           <p>{{ product.content }}</p>
         </div>
       </div>
@@ -24,6 +28,11 @@
   import Discount from './Discount.vue';
   export default {
     name: 'Modal',
+    data() {
+      return {
+        month: 1,
+      }
+    },
     props: {
       product: Object,
       isDiscount: Boolean,
