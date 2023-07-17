@@ -27,7 +27,11 @@
     props: {
       product: Object,
       isDiscount: Boolean,
-      closeModal: Function,
+    },
+    methods: {
+      closeModal() {
+        this.$emit('closeModal');
+      }
     },
     components: {
       Discount,
@@ -82,6 +86,7 @@
     padding: 0;
     width: 30px;
     height: 30px;
+    cursor: pointer;
   }
 
   .modal-close-btn .line {

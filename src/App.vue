@@ -15,13 +15,13 @@
   
       <!-- 상품 리스트 -->
       <div class="content">
-        <Card v-for="product in products" :key="product.id" :product="product" :openModal="openModal" />
+        <Card v-for="product in products" :key="product.id" :product="product" @openModal="openModal($event)" />
       </div>
     </div>
   </main>
 
   <!-- 모달 -->
-  <Modal v-if="isModalOpen" :product="products[modalId]" :isDiscount="isDiscount" :closeModal="closeModal" />
+  <Modal v-if="isModalOpen" :product="products[modalId]" :isDiscount="isDiscount" @closeModal="closeModal" />
 </template>
 
 <script>

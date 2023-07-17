@@ -1,7 +1,7 @@
 <template>
-  <div @click="() => openModal(product.id)" class="card">
+  <div class="card">
     <img class="room-img" :src="product.image" alt="room">
-    <h4>{{ product.title }}</h4>
+    <h4 @click="openModal">{{ product.title }}</h4>
     <p>{{ product.price.toLocaleString('ko-KR') }}원</p>
   </div>
 </template>
@@ -11,7 +11,11 @@
     name: 'Card',
     props: {
       product: Object,
-      openModal: Function,
+    },
+    methods: {
+      openModal() {
+        this.$emit('openModal', this.product.id);
+      }
     }
   }
 </script>
@@ -20,6 +24,10 @@
   .card {
     width: calc(50% - 10px);
     max-width: calc(1420px / 2);
+  }
+
+  .card h4 {
+    cursor: pointer;
   }
 
   @media all and (max-width: 768px) {
