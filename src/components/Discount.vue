@@ -10,7 +10,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .discount {
     background: #eee;
     padding: 10px;

@@ -21,10 +21,13 @@
   </main>
 
   <!-- 모달 -->
-  <Modal v-if="isModalOpen" :product="products[modalId]" :isDiscount="isDiscount" @closeModal="closeModal" />
+  <Transition name="fade">
+    <Modal v-if="isModalOpen" :product="products[modalId]" :isDiscount="isDiscount" @closeModal="closeModal" />
+  </Transition>
 </template>
 
 <script>
+  import './assets/common.css';
   import data from './data/products';
   import Modal from './components/Modal.vue';
   import Discount from './components/Discount.vue';
@@ -72,27 +75,6 @@
 </script>
 
 <style>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
-
-  body {
-    margin: 0;
-  }
-
-  div {
-    box-sizing: border-box;
-  }
-
-  main {
-    padding: 0 20px;
-    margin: 30px auto;
-  }
-
   .menu {
     background: darkslateblue;
     padding: 15px;
@@ -123,5 +105,27 @@
 
   .room-img {
     width: 100%;
+  }
+
+  /* start transition */
+  .fade-enter-from {
+    opacity: 0;
+  }
+  .fade-enter-active {
+    transition: all .3s;
+  }
+  .fade-enter-to {
+    opacity: 1;
+  }
+  
+  /* end transition */
+  .fade-leave-from {
+    opacity: 1;
+  }
+  .fade-leave-active {
+    transition: all .3s;
+  }
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>

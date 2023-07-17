@@ -20,13 +20,13 @@
   }
 </script>
 
-<style>
+<style scoped>
   .card {
     width: calc(50% - 10px);
     max-width: calc(1420px / 2);
   }
 
-  .card h4 {
+  h4 {
     cursor: pointer;
   }
 

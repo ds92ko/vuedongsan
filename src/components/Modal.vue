@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
   import Discount from './Discount.vue';
   export default {
     name: 'Modal',
