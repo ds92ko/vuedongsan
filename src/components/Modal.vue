@@ -3,7 +3,7 @@
     <div class="modal-container">
       <div class="modal-header">
         <h4>{{ product.title }}</h4>
-        <button @click="closeModal" class="modal-close-btn">
+        <button @click="$emit('closeModal')" class="modal-close-btn">
           <i class="line"></i>
           <i class="line"></i>
         </button>
@@ -13,8 +13,7 @@
           <Discount v-if="isDiscount" />
           <img class="room-img" :src="product.image" alt="room">
           <div>
-            <!-- <input :value="month" @input="month = $event.target.value" type="number" min="1" max="12" placeholder="개월 수 입력"> -->
-            <input v-model.number="month" type="number" min="1" max="12" placeholder="개월 수 입력">
+            <input v-model="month" placeholder="개월 수 입력">
           </div>
           <p>{{ month }}개월 합계 : {{ (product.price * month).toLocaleString('ko-KR') }}원</p>
           <p>{{ product.content }}</p>
@@ -33,14 +32,33 @@
         month: 1,
       }
     },
+    watch: {
+      month(newValue, oldValue) {
+        const max = 12;
+
+        if (/\D/.test(newValue)) {
+          alert('숫자만 입력 가능합니다.');
+          this.month = 1;
+          return;
+        }
+        if (!newValue) {
+          this.month = 0;
+          return;
+        }
+        if (oldValue === 0) {
+          this.month = newValue.slice(1);
+          return;
+        }
+        if (newValue > max) {
+          alert('최대 12까지 입력 가능합니다.');
+          this.month = oldValue;
+          return;
+        }
+      }
+    },
     props: {
       product: Object,
       isDiscount: Boolean,
-    },
-    methods: {
-      closeModal() {
-        this.$emit('closeModal');
-      }
     },
     components: {
       Discount,
